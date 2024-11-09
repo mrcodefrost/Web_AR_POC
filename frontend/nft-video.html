@@ -66,6 +66,7 @@
   >
     <!-- The Vidoe used to display -->
     <a-assets>
+        <!-- Writing crossorigin twice to fix the issue of autoplay -->
       <video
         src="https://cdn.glitch.global/a3e42cbc-7a77-42f7-b0f5-efc3639e59f6/mov_bbb.mp4?v=1731146092523"
         preload="auto"
@@ -77,6 +78,7 @@
         autoplay
         muted
         playsinline
+        crossorigin="anonymous"
       ></video>
     </a-assets>
 
