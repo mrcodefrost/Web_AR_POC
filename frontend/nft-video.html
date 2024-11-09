@@ -1,0 +1,104 @@
+<!-- Import A-Frame and AR.js libraries -->
+
+<script src="https://cdn.jsdelivr.net/gh/aframevr/aframe@1c2407b26c61958baa93967b5412487cd94b290b/dist/aframe-master.min.js"></script>
+<script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
+
+<script>
+  window.onload = function () {
+    AFRAME.registerComponent("videohandler", {
+      init: function () {
+        var marker = this.el;
+
+        this.vid = document.querySelector("#vid");
+
+        marker.addEventListener(
+          "markerFound",
+          function () {
+            this.vid.play();
+          }.bind(this)
+        );
+
+        marker.addEventListener(
+          "markerLost",
+          function () {
+            this.vid.pause();
+            this.vid.currentTime = 0;
+          }.bind(this)
+        );
+      },
+    });
+  };
+</script>
+
+<!-- Loading Screen Styles -->
+<style>
+  .arjs-loader {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.8);
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .arjs-loader div {
+    text-align: center;
+    font-size: 1.25em;
+    color: white;
+  }
+</style>
+
+<body style="margin: 0px; overflow: hidden">
+  <!-- Minimal Loader Description until the assets are loaded -->
+  <div class="arjs-loader">
+    <div>Loading, please wait...</div>
+  </div>
+  <!-- A-Frame Scene -->
+  <a-scene
+    vr-mode-ui="enabled: false;"
+    renderer="antialias: true; alpha: true; precision: medium;"
+    embedded
+    arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;"
+  >
+    <!-- The Vidoe used to display -->
+    <a-assets>
+      <video
+        src="https://cdn.glitch.global/a3e42cbc-7a77-42f7-b0f5-efc3639e59f6/mov_bbb.mp4?v=1731146092523"
+        preload="auto"
+        id="vid"
+        response-type="arraybuffer"
+        loop
+        crossorigin
+        webkit-playsinline
+        autoplay
+        muted
+        playsinline
+      ></video>
+    </a-assets>
+
+    <!-- The NFT image used for Tracking -->
+    <a-nft
+      videohandler
+      type="nft"
+      url="https://res.cloudinary.com/dx8cvptnz/raw/upload/v1731046807/marker-image/marker"
+      smooth="true"
+      smoothcount="10"
+      smoothtolerance="0.01"
+      smooththreshold="5"
+    >
+      <a-video
+        src="#vid"
+        position="50 150 0"
+        rotation="90 0 180"
+        width="200"
+        height="75"
+      >
+      </a-video>
+    </a-nft>
+    <a-entity camera></a-entity>
+  </a-scene>
+</body>
